@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="xrp_crypto_icon_264372.ico" type="image/x-icon">
+
+    <title>Sign In - SolverX</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+            margin: 0;
+        }
+        .container {
+            max-width: 350px;
+            background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
+            border-radius: 40px;
+            padding: 25px;
+            border: 5px solid rgb(255, 255, 255);
+            box-shadow: rgba(133, 189, 215, 0.878) 0px 30px 30px -20px;
+            text-align: center;
+            width: 90%;
+        }
+        .heading {
+            font-weight: 900;
+            font-size: 30px;
+            color: rgb(16, 137, 211);
+        }
+        .form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .input {
+            width: calc(100% - 20px);
+            background: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            box-shadow: #cff0ff 0px 10px 10px -5px;
+            border-inline: 2px solid transparent;
+        }
+        .input:focus {
+            outline: none;
+            border-inline: 2px solid #12B1D1;
+        }
+        .login-button {
+            width: calc(100% - 20px);
+            font-weight: bold;
+            background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+            color: white;
+            padding: 15px;
+            margin: 20px auto;
+            border-radius: 20px;
+            border: none;
+            transition: all 0.2s ease-in-out;
+        }
+        .loader {
+            display: none;
+            margin: 20px auto;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="heading">Sign In</div>
+        <form class="form" onsubmit="return handleLogin(event)">
+            <input required class="input" type="text" id="email" placeholder="User Name">
+            <input required class="input" type="password" id="password" placeholder="Password">
+            <input class="login-button" type="submit" value="Sign In">
+            <div class="loader" id="loader"></div>
+        </form>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const loader = document.getElementById("loader");
+            
+            if (email === "UserKavitha" && password === "Asdf@#1234") {
+                loader.style.display = "block";
+                setTimeout(() => {
+                    window.location.href = "solverX.html";
+                }, 2000);
+            } else {
+                alert("Invalid username or password");
+            }
+        }
+    </script>
+</body>
+</html>

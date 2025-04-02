@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="xrp_crypto_icon_264372.ico" type="image/x-icon">
+
+    <title>Client Problems</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(45deg, #f3f4f6, #ffffff);
+        }
+        .container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+        h2, h3 {
+            text-align: center;
+            color: #0056b3;
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+        .form-container input, select, button {
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .close-btn {
+            color: red;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .popup button {
+            margin-top: 10px;
+            background: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <h2>Client Problems</h2>
+    <div class="container">
+        <div class="form-container">
+            <input type="date" id="fromDate" placeholder="From Date">
+            <input type="text" id="problem" placeholder="Enter Problem">
+            <select id="category">
+                <option value="canDo">Can Do</option>
+                <option value="needHelp">Need Help</option>
+            </select>
+            <input type="date" id="solveDate" placeholder="Solve Date">
+            <button onclick="addProblem()">Add</button>
+        </div>
+    </div>
+    <h3>Can Do</h3>
+    <table id="canDoTable">
+        <tr>
+            <th>From Date</th>
+            <th>Problem</th>
+            <th>Solve Date</th>
+            <th>Action</th>
+        </tr>
+    </table>
+    <h3>Need Help</h3>
+    <table id="needHelpTable">
+        <tr>
+            <th>From Date</th>
+            <th>Problem</th>
+            <th>Solve Date</th>
+            <th>Action</th>
+        </tr>
+    </table>
+    <div class="popup" id="popup">
+        <p>Problem added successfully!</p>
+        <button onclick="closePopup()">OK</button>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", loadProblems);
+
+        function addProblem() {
+            const fromDate = document.getElementById("fromDate").value;
+            const problem = document.getElementById("problem").value;
+            const category = document.getElementById("category").value;
+            const solveDate = document.getElementById("solveDate").value;
+
+            if (!fromDate || !problem || !solveDate) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const problemData = { fromDate, problem, solveDate, category };
+            let problems = JSON.parse(localStorage.getItem("problems")) || [];
+            problems.push(problemData);
+            localStorage.setItem("problems", JSON.stringify(problems));
+
+            insertRow(problemData);
+            document.getElementById("popup").style.display = "block";
+        }
+
+        function insertRow(data) {
+            const table = data.category === "canDo" ? document.getElementById("canDoTable") : document.getElementById("needHelpTable");
+            const row = table.insertRow(-1);
+            row.insertCell(0).innerText = data.fromDate;
+            row.insertCell(1).innerText = data.problem;
+            row.insertCell(2).innerText = data.solveDate;
+            const actionCell = row.insertCell(3);
+            actionCell.innerHTML = `<span class="close-btn" onclick="deleteRow(this, '${data.problem}')">✖</span>`;
+        }
+
+        function loadProblems() {
+            let problems = JSON.parse(localStorage.getItem("problems")) || [];
+            problems.forEach(insertRow);
+        }
+
+        function deleteRow(element, problem) {
+            const row = element.parentElement.parentElement;
+            row.remove();
+
+            let problems = JSON.parse(localStorage.getItem("problems")) || [];
+            problems = problems.filter(p => p.problem !== problem);
+            localStorage.setItem("problems", JSON.stringify(problems));
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
+</body>
+</html>
